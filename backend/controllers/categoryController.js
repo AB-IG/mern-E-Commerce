@@ -28,7 +28,7 @@ const updateCategory = async (req,res) =>{
 
     try {
 
-        const categoryExist = await Category.findOne({name, _id: {$ne: id}})
+        const categoryExist = await Category.findOne({name: name, _id: {$ne: id}})
 
         if(categoryExist){
             return res.status(400).json({message:`${name} category already exist`})
@@ -38,7 +38,7 @@ const updateCategory = async (req,res) =>{
         if(!updatedCategory){
             return res.status(404).json({success:false,message:"Category not found"})
         }
-
+        await updatedCategory.save()
         res.status(200).json({success:true,message:`category  has been updated successfully`,updatedCategory
         })
     } catch (error) {
