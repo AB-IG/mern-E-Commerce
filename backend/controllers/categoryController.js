@@ -1,4 +1,4 @@
-import Category from "../model/CategoryModel"
+import Category from "../model/CategoryModel.js"
 
 
 const createCategory = async (req,res) =>{
@@ -28,18 +28,18 @@ const updateCategory = async (req,res) =>{
 
     try {
 
-        const categoryExist = await Category.findOne({name})
+        const categoryExist = await Category.findOne({name, _id: {$ne: id}})
 
         if(categoryExist){
             return res.status(400).json({message:`${name} category already exist`})
         }
-        const updatedCategory = await Category.findByIdAndUpdate(id,{name},{new:true})
+        const updatedCategory = await Category.findByIdAndUpdate(id,{name},{new:true, runValidators: true})
 
         if(!updatedCategory){
             return res.status(404).json({success:false,message:"Category not found"})
         }
 
-        res.status(200).json({success:true,message:`category with id:${id} has been updated successfully to`,updatedCategory
+        res.status(200).json({success:true,message:`category  has been updated successfully`,updatedCategory
         })
     } catch (error) {
          res.status(500).json({success:false,message:"server error"})
@@ -49,29 +49,29 @@ const getSingleCategory = async (req,res) =>{
     const {id} = req.params
 
     try {
-        const category = await Category.findOne({id})
+        const category = await Category.findOne({_id:id})
 
         if(!category){
             return res.status(404).json({success:false,message:"Category not found"})
         }
 
-        res.status(200).json(category)
+        res.status(200).json({success:true,category})
     } catch (error) {
-         res.status(500).json({success:false,message:"server error"})
+      return   res.status(500).json({success:false,message:"server error"})
     }
 }
 const deleteCategory = async (req,res) =>{
     
     try {
-        const deleteCate = await Category.findOneAndDelete(req.params.id)
+        const deleteCate = await Category.findByIdAndDelete(req.params.id)
 
         if(!deleteCate){
           return res.status(404).json({success:false,message:"Category not found"})
         }
 
-        res.status(200).json({message:"Category deleted successfully"})
+       return res.status(200).json({success:true,message:"Category deleted successfully"})
     } catch (error) {
-        res.status(500).json({success:false,message:"server error"})
+       return res.status(500).json({success:false,message:"server error"})
     }
 }
 const getAllCategories = async (req,res) =>{
@@ -79,9 +79,9 @@ const getAllCategories = async (req,res) =>{
     try {
         const categories = await Category.find({})
 
-        res.status(200).json({categories:categories})
+      return  res.status(200).json({success:true,categories})
     } catch (error) {
-         res.status(500).json({success:false,message:"server error"})
+        return res.status(500).json({success:false,message:"server error"})
     }
 }
 

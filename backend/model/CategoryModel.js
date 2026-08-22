@@ -8,6 +8,7 @@ const categorySchema = mongoose.Schema({
         maxLenght: 32,
         required:true
     }
-}, {timeStamps:true})
+}, { timestamps: true })
 
-export default Category = mongoose.model("Category",categorySchema)
+const Category = mongoose.model("Category",categorySchema)
+export default Category

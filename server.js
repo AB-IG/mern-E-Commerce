@@ -3,6 +3,8 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import conncetDB from "./backend/config/connectDB.js";
 import userRoutes from "./backend/routes/userRoutes.js"
+import categoryRoutes from "./backend/routes/categoryRoutes.js"
+
 
 
 dotenv.config()
@@ -18,6 +20,7 @@ app.use(cookieParser())
 conncetDB()
 
 app.use("/auth",userRoutes)
+app.use("/category",categoryRoutes)
 
 
 app.listen(port, (req,res) => console.log(`Listening to port ${port}`))

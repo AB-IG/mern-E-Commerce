@@ -21,4 +21,5 @@ const productSchema = mongoose.Schema({
     countInStock:{type:Number,required:true,default:0}
 },{timestamps:true})
 
-export default Product = mongoose.model("Product",productSchema)
+const Product = mongoose.model("Product",productSchema)
+export default Product
