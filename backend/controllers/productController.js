@@ -1,8 +1,10 @@
 import Product from "../model/ProductModel.js";
 
 export const addProduct = async(req,res) => {
-    const {name,brand,category,description,images,price } = req.fields
+   
     try {
+         const {name,brand,category,description,price } = req.fields
+         
          switch(true){
         case !name:
             return res.status(400).json({message:"Name is required"})
@@ -12,8 +14,6 @@ export const addProduct = async(req,res) => {
             return res.status(400).json({message:"category is required"})
         case !description:
             return res.status(400).json({message:"description is required"})
-        case !image:
-            return res.status(400).json({message:"image is required"})
         case !price:
             return res.status(400).json({message:"price is required"})
     }
@@ -21,6 +21,7 @@ export const addProduct = async(req,res) => {
      const product = await Product.create({...req.fields})
      return res.status(201).json({success:true,Products:product})
     } catch (error) {
+          console.error("ADD PRODUCT ERROR:", error);
         return res.status(500).json({success:false,message:"Server error"})
 
     }

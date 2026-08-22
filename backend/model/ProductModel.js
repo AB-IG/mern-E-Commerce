@@ -10,7 +10,7 @@ user:{type:objectId,ref:"User",required:true}},{timestamps:true})
 
 const productSchema = mongoose.Schema({
     name:{type:String,required:true,trim:true},
-    image:{type:String,required:true},
+    image:{type:String},
     brand:{type:String, required:true,trim:true},
     category:{type:objectId,ref:"Category",required:true},
     description:{type:String,required:true,trim:true},

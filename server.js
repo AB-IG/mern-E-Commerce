@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import conncetDB from "./backend/config/connectDB.js";
 import userRoutes from "./backend/routes/userRoutes.js"
 import categoryRoutes from "./backend/routes/categoryRoutes.js"
+import productRoutes from "./backend/routes/productRoutes.js"
 
 
 
@@ -21,6 +22,7 @@ conncetDB()
 
 app.use("/auth",userRoutes)
 app.use("/category",categoryRoutes)
+app.use("/products",productRoutes)
 
 
 app.listen(port, (req,res) => console.log(`Listening to port ${port}`))
