@@ -27,3 +27,18 @@ export const addProduct = async(req,res) => {
     }
 
 }
+export const fetchProducts = async(req,res) =>{
+
+    try {
+        const pages = 4
+        const keyword = req.query.keyword ? {name:{$regex:req.query.keyword, $options:"i"}} :{}
+
+    const products = await Product.find({...keyword}).sort({createdAt: -1}).limit(pages)
+
+        res.status(200).json({success:true, products})
+
+    } catch (error) {
+          console.error("ADD PRODUCT ERROR:", error);
+        return res.status(500).json({success:false,message:"Server error"})
+    }
+}
