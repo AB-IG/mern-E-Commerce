@@ -105,7 +105,27 @@ export const fetchProductById = async (req,res) => {
     }
 }
 export const updateProduct = async (req,res) => {
-//TODO
+
+    try {
+        const {id} = req.params
+        const productExist = await Product.findById(id)
+        console.log("ID:", id);
+console.log("FIELDS:", req.fields);
+
+
+        if(!productExist){
+            return res.status(404).json({success:false, message:"Product not found..."})
+
+        }
+
+
+        const updatedProduct = await Product.findByIdAndUpdate(id,{$set: req.fields},{new:true, runValidators:true})
+
+return res.status(200).json({success:true,updatedProduct})
+    } catch (error) {
+          console.error("Update PRODUCT ERROR:", error);
+        return res.status(500).json({success:false,message:"Server error"})
+    }
 }
 export const deleteProduct = async (req,res) => {
     try {

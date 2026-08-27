@@ -9,5 +9,7 @@ const router = express.Router()
 router.route("/").post(expressFormidable(),authenticated,authorisedAdmin,addProduct).get(fetchProducts)
 router.get("/top",fetchTopProducts)
 router.post("/:id/review",authenticated,addReview)
-router.route("/:id").get(fetchProductById).put(authenticated,authorisedAdmin,updateProduct).delete(authenticated,authorisedAdmin,deleteProduct)
+router.route("/:id").get(fetchProductById)
+.put(authenticated,authorisedAdmin,expressFormidable(),updateProduct)
+.delete(authenticated,authorisedAdmin,deleteProduct)
 export default router
