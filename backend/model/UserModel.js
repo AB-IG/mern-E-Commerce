@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema({
     verifyEmailToken:String,
     verifyEmailTokenExpiresAt:Date,
     resetPasswordToken:String,
-    resetPasswordTokenExpieresAt:Date
+    resetPasswordTokenExpiresAt:Date
 
 },{timestamps:true})
 

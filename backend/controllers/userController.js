@@ -2,6 +2,7 @@ import User from "../model/UserModel.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/generateToken.js";
 import code from "../utils/verifyToken.js";
+import { resetPasswordEmail, welcomeEmail } from "../utils/sendMailFormats.js";
 
 
 const createUser = async(req,res)=> {
@@ -20,10 +21,12 @@ const createUser = async(req,res)=> {
       const  user= await User.create({name,password:hashedPassword,email})
       user.verifyEmailToken = code()
       user.verifyEmailTokenExpiresAt = Date.now() + 10 * 60 * 1000
+      
       await user.save()
-        createToken(res,user._id)
+      await welcomeEmail(user)
+       
 
-        res.status(201).json({message:"user Created successfully",
+        res.status(201).json({message:"user Created successfully, Verify Token sent to the provided email address",
          id:user._id,
          email: user.email,
          name:user.name
@@ -49,7 +52,7 @@ const verifyEmail = async (req,res) =>{
             user.verifyEmailTokenExpiresAt = null
 
             await user.save()
-
+    
             res.status(200).json({success:true, message:"Email verified successfully"})
         } catch (error) {
             res.status(500).json({error:"server error"})
@@ -62,11 +65,14 @@ const forgetPassword = async (req,res) =>{
     try {
         const user = await User.findOne({email})
         if(user){
-            user.resetPasswordToken = Math.floor(100000 + Math.random() * 900000)
-        user.resetPasswordTokenExpieresAt = Date.now() + 10 * 60 * 1000
+            user.resetPasswordToken = Math.floor(
+    100000 + Math.random() * 900000
+).toString();
+        user.resetPasswordTokenExpiresAt = Date.now() + 10 * 60 * 1000
 
         await user.save()
-        // send email function here (TODO)
+        
+        await resetPasswordEmail(user)
        
         }
         res.status(200).json(
@@ -88,12 +94,16 @@ const loginUser = async (req,res) => {
         if(!userExist){
             return res.status(401).json({error:"Invalid credentials"})
         }
+        if(!userExist.isVerified){
+            return res.status(401).json({error:"Invalid credentials or Email not verified!"})
+        }
+        
       const  isPasswordMatch = await bcrypt.compare(password,userExist.password)
         if(!isPasswordMatch){
             return res.status(401).json({error:"Invalid credentials"})
         }
 
-       await createToken(res,userExist._id)
+      createToken(res, userExist._id);
       return  res.status(200).json(
         {message:"logged in successfully",
         ...userExist._doc, password:undefined})
@@ -111,7 +121,7 @@ const resetPassword = async (req,res)=>{
     try {
         const user = await User.findOne({email:email,
              resetPasswordToken:code,
-             resetPasswordTokenExpieresAt:{$gt:Date.now()}})
+             resetPasswordTokenExpiresAt:{$gt:Date.now()}})
 
             if(!user){
                 return res.status(404).json({success:false,
@@ -121,7 +131,7 @@ const resetPassword = async (req,res)=>{
 
             user.password = hashedPassword
             user.resetPasswordToken = null
-            user.resetPasswordTokenExpieresAt = null
+            user.resetPasswordTokenExpiresAt = null
 
             await user.save()
 
