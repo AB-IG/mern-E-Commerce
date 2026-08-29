@@ -76,7 +76,7 @@ export const addReview = async (req,res) => {
                 user: req.user._id
             }
 
-                 product.reviews = [...product.reviews, review]//or //product.reviews.push(review)
+             product.reviews = [...product.reviews, review]//or //product.reviews.push(review)
              product.numReviews = product.reviews.length
              product.rating = product.reviews.reduce((acc,item) => acc + item.rating,0)/product.reviews.length
 
@@ -140,6 +140,16 @@ export const deleteProduct = async (req,res) => {
         
     } catch (error) {
          console.error("find PRODUCT ERROR:", error);
+        return res.status(500).json({success:false,message:"Server error"})
+    }
+} 
+export const fetchNewProduct = async (req,res) => {
+
+    try {
+        const product = await Product.find().sort({ _id : -1}).limit(3)
+        return res.status(200).json({success:true,product})
+    } catch (error) {
+           console.error("fetching new PRODUCT ERROR:", error);
         return res.status(500).json({success:false,message:"Server error"})
     }
 }

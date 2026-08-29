@@ -1,6 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
+import expressFormidable from "express-formidable";
 import conncetDB from "./backend/config/connectDB.js";
 import userRoutes from "./backend/routes/userRoutes.js"
 import categoryRoutes from "./backend/routes/categoryRoutes.js"
@@ -17,6 +18,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(expressFormidable());
 
 conncetDB()
 
