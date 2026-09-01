@@ -1,13 +1,13 @@
 import express from "express"
 import { authenticated,authorisedAdmin } from "../middlewares/auth.js" 
 import {
-    ceateOrder,getAllOrders,findOrderbyId,
+    createOrder,getAllOrders,findOrderbyId,
     countTotalOrders,calculateTotalSales,
-    markOrderAsPaid,markOrderAsDelivered} from "../controllers/orderController.js"
+    markOrderAsPaid,markOrderAsDelivered,getUserOrders} from "../controllers/orderController.js"
 
 const router = express.Router()
 
-router.route("/create").post(authenticated, ceateOrder)
+router.route("/create").post(authenticated, createOrder)
 router.route("/").get(authenticated, authorisedAdmin, getAllOrders)
 router.route("/total-orders").get(authenticated,authorisedAdmin,countTotalOrders)
 router.route("/total-sales").get(authenticated,authorisedAdmin,calculateTotalSales)

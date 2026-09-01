@@ -109,6 +109,7 @@ const loginUser = async (req,res) => {
         ...userExist._doc, password:undefined})
      
     } catch (error) {
+        console.error("Login Error:",error)
         res.status(500).json({error:"server error"})
     }
 }
