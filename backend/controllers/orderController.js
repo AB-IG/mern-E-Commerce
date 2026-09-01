@@ -60,7 +60,15 @@ const createOrder = async (req, res) => {
         return res.status(500).json({success:false,message: error.message})
     }
 }
-const getAllOrders = async (req,res) => {}
+const getAllOrders = async (req,res) => {
+    try {
+        const order = await Order.find({}).populate("user", "name email")
+
+        return res.status(200).json({success:true,Orders: order})
+    } catch (error) {
+        return res.status(500).json({success:false, message:error.message})
+    }
+}
 const findOrderbyId = async (req,res) => {}
 const countTotalOrders = async (req,res) => {}
 const calculateTotalSales = async (req,res) => {}
