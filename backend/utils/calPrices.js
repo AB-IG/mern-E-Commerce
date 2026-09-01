@@ -1,18 +1,18 @@
 
 const calPrices = (orderItems) => {
-    const itemPrice = orderItems.reduce((acc, item) => acc + item.price * item.qty,0).toFixed(2)
+    const itemPrice = orderItems.reduce((acc, item) => acc + item.price * item.qty,0)
     //shippingPrice, taxRate, taxPrice, totalPrice
     const shippingPrice = itemPrice > 100 ? 0 : 10
     const taxRate = 0.15
-    const taxPrice = (itemPrice * taxRate).toFixed(2)
+    const taxPrice = (itemPrice * taxRate)
 
-    const totalPrice = (itemPrice + shippingPrice + parseFloat(taxPrice).toFixed(2))
+    const totalPrice = (itemPrice + shippingPrice + parseFloat(taxPrice))
 
     return {
-        itemPrice,
-        shippingPrice,
-        taxPrice,
-        totalPrice
+        itemPrice : itemPrice.toFixed(2),
+        shippingPrice : shippingPrice.toFixed(2),
+        taxPrice: taxPrice.toFixed(2),
+        totalPrice: totalPrice.toFixed(2)
     }
 }
 

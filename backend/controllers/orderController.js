@@ -41,7 +41,7 @@ const createOrder = async (req, res) => {
             }
         })
         
-     const    {itemPrice, shippingPrice, taxPrice, totalprice} = calPrices(dbOrderItems)
+     const    {itemPrice, shippingPrice, taxPrice, totalPrice} = calPrices(dbOrderItems)
 
           const order = await Order.create({
             user: req.user._id,
@@ -51,7 +51,7 @@ const createOrder = async (req, res) => {
             itemPrice,
             taxPrice,
             shippingPrice,
-            totalprice
+            totalPrice
           })
 
           return res.status(201).json({success:true, message: order})
