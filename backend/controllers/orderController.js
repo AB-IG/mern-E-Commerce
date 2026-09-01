@@ -1,6 +1,6 @@
 import Order from "../model/OrderModel.js";
 import Product from "../model/ProductModel.js";
-
+import calPrices from "../utils/calPrices.js";
 
 const createOrder = async (req, res) => {
     try {
@@ -41,11 +41,17 @@ const createOrder = async (req, res) => {
             }
         })
         
+     const    {itemPrice, shippingPrice, taxPrice, totalprice} = calPrices(dbOrderItems)
+
           const order = await Order.create({
             user: req.user._id,
             orderItems: dbOrderItems,
             shippingAddress,
-            paymentMethod: paymentMethod || "payPal"
+            paymentMethod: paymentMethod || "payPal",
+            itemPrice,
+            taxPrice,
+            shippingPrice,
+            totalprice
           })
 
           return res.status(201).json({success:true, message: order})
