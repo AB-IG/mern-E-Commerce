@@ -70,7 +70,15 @@ const getAllOrders = async (req,res) => {
     }
 }
 const findOrderbyId = async (req,res) => {}
-const countTotalOrders = async (req,res) => {}
+const countTotalOrders = async (req,res) => {
+    try {
+        const orders = await Order.find({})
+
+        return res.status(200).json({success:false, Total: `Total amount of Orders is:${orders.length}`})
+    } catch (error) {
+         return res.status(500).json({success:false, message:error.message})
+    }
+}
 const calculateTotalSales = async (req,res) => {}
 const markOrderAsPaid = async (req,res) => {}
 const markOrderAsDelivered = async (req,res) => {}
