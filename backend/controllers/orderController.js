@@ -74,7 +74,20 @@ const countTotalOrders = async (req,res) => {}
 const calculateTotalSales = async (req,res) => {}
 const markOrderAsPaid = async (req,res) => {}
 const markOrderAsDelivered = async (req,res) => {}
-const getUserOrders = async (req,res) => {}
+const getUserOrders = async (req,res) => {
+
+    try {
+        const order = await Order.find({user:req.user._id})
+
+        if(!order){
+            return res.status(404).json({success:false, message:"No order Found!"})
+        }
+
+        return res.status(200).json({success:true, order})
+    } catch (error) {
+           return res.status(500).json({success:false, message:error.message})
+    }
+}
 export {
     createOrder,getAllOrders,findOrderbyId,
     countTotalOrders,calculateTotalSales,
