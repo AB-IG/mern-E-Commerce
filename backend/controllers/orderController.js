@@ -72,9 +72,9 @@ const getAllOrders = async (req,res) => {
 const findOrderbyId = async (req,res) => {}
 const countTotalOrders = async (req,res) => {
     try {
-        const orders = await Order.find({})
+        const orders = await Order.countDocuments()
 
-        return res.status(200).json({success:false, Total: `Total amount of Orders is:${orders.length}`})
+        return res.status(200).json({success:true, Total_Orders: orders})
     } catch (error) {
          return res.status(500).json({success:false, message:error.message})
     }
