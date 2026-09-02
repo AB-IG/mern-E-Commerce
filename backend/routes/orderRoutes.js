@@ -12,6 +12,6 @@ router.route("/").get(authenticated, authorisedAdmin, getAllOrders)
 router.route("/total-orders").get(authenticated,authorisedAdmin,countTotalOrders)
 router.route("/total-sales").get(authenticated,authorisedAdmin,calculateTotalSales)
 router.route("/mine").get(authenticated,getUserOrders).get(authenticated,findOrderbyId)
-router.route("/:id/pay").put(authenticated,authorisedAdmin,markOrderAsPaid)
-router.route("/:id/delivered").post(authenticated,authorisedAdmin,markOrderAsDelivered)
+router.route("/:id/pay").put(authenticated,markOrderAsPaid)
+router.route("/:id/delivered").put(authenticated,authorisedAdmin,markOrderAsDelivered)
 export default router
