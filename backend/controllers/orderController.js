@@ -91,7 +91,33 @@ const calculateTotalSales = async (req,res) => {
                  return res.status(500).json({success:false, message:error.message})
     }
 }
-const markOrderAsPaid = async (req,res) => {}
+const markOrderAsPaid = async (req,res) => {
+
+    try {
+
+        const order = await Order.findById(req.params.id)
+
+        if(order){
+            order.isPaid = true,
+            order.paidAt = Date.now(),
+            order.paymentResult = {
+                id: req.body.id,
+                status: req.body.status,
+                updated_time: req.body.updated_time,
+                email_address : req.body.payer.email_address
+            }
+             const updatedOrder = await order.save()
+             res.status(200).json(updatedOrder)
+        }else {
+            res.status(404).json({success:false, message:"Order not found"})
+        }
+
+       
+        
+    } catch (error) {
+                 return res.status(500).json({success:false, message:error.message})
+    }
+}
 const markOrderAsDelivered = async (req,res) => {}
 const getUserOrders = async (req,res) => {
 
