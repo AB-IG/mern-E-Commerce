@@ -79,7 +79,18 @@ const countTotalOrders = async (req,res) => {
          return res.status(500).json({success:false, message:error.message})
     }
 }
-const calculateTotalSales = async (req,res) => {}
+const calculateTotalSales = async (req,res) => {
+
+    try {
+        const order = await Order.find({})
+
+        const totalSales = order.reduce((acc, item) => acc + item.totalPrice,0)
+
+        return res.status(200).json({success:true, Total_Sales: totalSales})
+    } catch (error) {
+                 return res.status(500).json({success:false, message:error.message})
+    }
+}
 const markOrderAsPaid = async (req,res) => {}
 const markOrderAsDelivered = async (req,res) => {}
 const getUserOrders = async (req,res) => {
